@@ -16,6 +16,8 @@
 
 package com.example.android.persistence.db.dao;
 
+import android.database.Cursor;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -24,6 +26,10 @@ import androidx.room.Query;
 import com.example.android.persistence.db.entity.ProductEntity;
 
 import java.util.List;
+
+import static android.app.SearchManager.SUGGEST_COLUMN_INTENT_DATA;
+import static android.app.SearchManager.SUGGEST_COLUMN_TEXT_1;
+import static android.app.SearchManager.SUGGEST_COLUMN_TEXT_2;
 
 @Dao
 public interface ProductDao {
@@ -39,7 +45,13 @@ public interface ProductDao {
     @Query("select * from products where id = :productId")
     ProductEntity loadProductSync(int productId);
 
-    @Query("SELECT products.* FROM products JOIN productsFts ON (products.id = productsFts.rowid) "
-        + "WHERE productsFts MATCH :query")
-    LiveData<List<ProductEntity>> searchAllProducts(String query);
+    // TODO-Fts-8: Provide search SQL to return a cursor with correct column headings
+    // See: https://developer.android.com/guide/topics/search/adding-custom-suggestions#HandlingSuggestionQuery
+    @SuppressWarnings("AndroidUnresolvedRoomSqlReference") // Only add this once tested
+    @Query("SELECT products.id AS _id, products.name AS " +
+            SUGGEST_COLUMN_TEXT_1 + ", products.description AS " + SUGGEST_COLUMN_TEXT_2 + ", " +
+            "products.id AS " + SUGGEST_COLUMN_INTENT_DATA +
+            " FROM products JOIN productsFts ON (products.id = productsFts.rowid) " +
+            "WHERE productsFts MATCH :query")
+    Cursor searchAllProducts(String query);
 }

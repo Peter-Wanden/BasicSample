@@ -1,5 +1,8 @@
 package com.example.android.persistence;
 
+import android.database.Cursor;
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import com.example.android.persistence.db.AppDatabase;
@@ -13,9 +16,12 @@ import java.util.List;
  */
 public class DataRepository {
 
+    private static final String TAG = DataRepository.class.getSimpleName();
+
     private static DataRepository sInstance;
 
     private final AppDatabase mDatabase;
+
     private MediatorLiveData<List<ProductEntity>> mObservableProducts;
 
     private DataRepository(final AppDatabase database) {
@@ -56,7 +62,8 @@ public class DataRepository {
         return mDatabase.commentDao().loadComments(productId);
     }
 
-    public LiveData<List<ProductEntity>> searchProducts(String query) {
+    // TODO-Fts-8a: Make sure the repo returns a Cursor.
+    public Cursor searchProducts(String query) {
         return mDatabase.productDao().searchAllProducts(query);
     }
 }

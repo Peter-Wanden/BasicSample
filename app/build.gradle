@@ -59,6 +59,7 @@ dependencies {
     // Support libraries
     implementation deps.support.app_compat
     implementation deps.support.v4
+    implementation deps.support.v7 // Added by me
     implementation deps.support.design
     implementation deps.support.cardview
 

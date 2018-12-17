@@ -26,7 +26,6 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import android.content.Context;
 import androidx.annotation.NonNull;
-import androidx.annotation.VisibleForTesting;
 import com.example.android.persistence.AppExecutors;
 import com.example.android.persistence.db.converter.DateConverter;
 import com.example.android.persistence.db.dao.CommentDao;
@@ -36,15 +35,14 @@ import com.example.android.persistence.db.entity.ProductEntity;
 
 import com.example.android.persistence.db.entity.ProductFtsEntity;
 import java.util.List;
-
+// TODO-Fts9: Add the FtsEntity class to the database annotation
 @Database(entities = {ProductEntity.class, ProductFtsEntity.class, CommentEntity.class}, version = 2)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 
-    private static AppDatabase sInstance;
-
-    @VisibleForTesting
     public static final String DATABASE_NAME = "basic-sample-db";
+
+    private static AppDatabase sInstance;
 
     public abstract ProductDao productDao();
 
@@ -129,10 +127,11 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static final Migration MIGRATION_1_2 = new Migration(1, 2) {
 
+        // TODO-Fts-10: Provide a database upgrade path that will refresh the Fts table
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
-            database.execSQL("CREATE VIRTUAL TABLE IF NOT EXISTS `productsFts` USING FTS4("
-                + "`name` TEXT, `description` TEXT, content=`products`)");
+            database.execSQL("CREATE VIRTUAL TABLE IF NOT EXISTS `productsFts` USING FTS4(" +
+                    "`name` TEXT, `description` TEXT, content=`products`)");
             database.execSQL("INSERT INTO productsFts (`rowid`, `name`, `description`) "
                 + "SELECT `id`, `name`, `description` FROM products");
 

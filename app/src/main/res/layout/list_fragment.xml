@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2017, The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,11 +14,12 @@
   ~ limitations under the License.
   -->
 
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="isLoading"
             type="boolean" />
@@ -31,29 +31,6 @@
         android:background="@color/cardview_light_background"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/item_horizontal_margin"
-            android:layout_marginEnd="@dimen/item_horizontal_margin"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/products_search_box"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="@string/search_products_hint"/>
-
-            <ImageButton
-                android:id="@+id/products_search_btn"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:contentDescription="@string/cd_search_products"
-                app:srcCompat="@drawable/ic_search_black_24dp"/>
-
-        </LinearLayout>
-
         <TextView
             android:id="@+id/loading_tv"
             android:layout_width="match_parent"
@@ -61,15 +38,15 @@
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/loading_products"
             android:textAlignment="center"
-            app:visibleGone="@{isLoading}"/>
+            app:visibleGone="@{isLoading}" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/products_list"
-            android:contentDescription="@string/cd_products_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contentDescription="@string/cd_products_list"
             app:layoutManager="LinearLayoutManager"
-            app:visibleGone="@{!isLoading}"/>
+            app:visibleGone="@{!isLoading}" />
 
     </LinearLayout>
 </layout>

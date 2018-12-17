@@ -17,6 +17,9 @@
 package com.example.android.persistence.viewmodel;
 
 import android.app.Application;
+import android.database.Cursor;
+import android.util.Log;
+
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -27,6 +30,8 @@ import com.example.android.persistence.db.entity.ProductEntity;
 import java.util.List;
 
 public class ProductListViewModel extends AndroidViewModel {
+
+    private static final String TAG = ProductListViewModel.class.getSimpleName();
 
     private final DataRepository mRepository;
 
@@ -40,7 +45,9 @@ public class ProductListViewModel extends AndroidViewModel {
         // set by default null, until we get data from the database.
         mObservableProducts.setValue(null);
 
+        // Get application context and cast it to BasicApp instance
         mRepository = ((BasicApp) application).getRepository();
+
         LiveData<List<ProductEntity>> products = mRepository.getProducts();
 
         // observe the changes of the products from the database and forward them
@@ -54,7 +61,7 @@ public class ProductListViewModel extends AndroidViewModel {
         return mObservableProducts;
     }
 
-    public LiveData<List<ProductEntity>> searchProducts(String query) {
+    public Cursor searchProducts(String query) {
         return mRepository.searchProducts(query);
     }
 }
